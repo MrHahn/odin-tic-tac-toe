@@ -65,3 +65,46 @@ function Game(){
     }
     return {getBoard, placeMark};
 }
+
+function GameHandler(){
+    let game = Game();
+    let gameBoard = game.getBoard();
+    let gameTable = document.querySelector('.game-table');
+
+    for(let [rowIndex, row] of gameBoard.entries()){
+        for(let [colIndex, cell] of row.entries()){
+            let cellButton = document.createElement('button');
+            cellButton.setAttribute('data-cell', `${rowIndex}, ${colIndex}`);
+            cellButton.textContent = cell;
+            gameTable.appendChild(cellButton);
+
+            cellButton.addEventListener('click', function(){
+                let cellCoord = this.dataset.cell;
+                let cellCoordArr = cellCoord.split(',');
+                let x = parseInt(cellCoordArr[0]);
+                let y = parseInt(cellCoordArr[1]);
+                game.placeMark(x, y);
+                updateBoard(this);
+            })
+        }
+    }
+
+    const updateBoard = (item) => {
+        let cellCoord = item.dataset.cell;
+        let cellCoordArr = cellCoord.split(',');
+        let x = parseInt(cellCoordArr[0]);
+        let y = parseInt(cellCoordArr[1]);
+
+        for(let [rowIndex, row] of gameBoard.entries()){
+            for(let [colIndex, cell] of row.entries()){
+                if (rowIndex === x && colIndex === y){
+                    if (cell === 1){ item.textContent = "X"};
+                    if (cell === 2){ item.textContent = "O"};
+                }
+            }
+        }
+    }
+    
+}
+
+GameHandler();
