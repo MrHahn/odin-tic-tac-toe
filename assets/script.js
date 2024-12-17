@@ -80,8 +80,22 @@ function Game(){
                 console.log(`${player.name} wins`);
                 announceWinner(player.name);
                 return;
+            }else if (allIndexesFilled(board)){
+                announceWinner('No one');
             }
         }
+        
+    }
+
+    function allIndexesFilled(arr) {
+        for (let i = 0; i < arr.length; i++) {
+            for (let j = 0; j < arr[i].length; j++) {
+            if (arr[i][j] === undefined || arr[i][j] === null) {
+                return false;
+            }
+            }
+        }
+        return true;
     }
 
     const announceWinner = (name) => {
