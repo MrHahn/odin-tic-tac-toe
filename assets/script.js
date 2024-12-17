@@ -24,6 +24,7 @@ function Game(){
     let gameOver = false;
     const players = Players();
     const board = [];
+    let activePlayer = document.querySelector('.active-player span');
 
     const boardSetup = () => {
         for (let i = 0; i < 3; i++) {
@@ -49,6 +50,7 @@ function Game(){
                     console.table(board);
                     checkWin(board);
                     players.switchPlayer();
+                    activePlayer.textContent = players.getActivePlayer().name;
                 }else{
                     alert('place is already taken');
                 }
@@ -84,8 +86,11 @@ function Game(){
 
     const announceWinner = (name) => {
         const message = document.querySelector('.message');
+        const dialog = document.querySelector('dialog');
         message.textContent = `${name} wins the game`;
+        dialog.showModal();
         gameOver = true;
+
     }
 
     return {getBoard, placeMark, boardSetup, resetGameStatus };
@@ -142,10 +147,13 @@ function GameHandler(){
 
     function resetGame (){
         let message = document.querySelector('.message');
+        let dialog = document.querySelector('dialog');
         game.boardSetup();
         resetBoard();
         game.resetGameStatus();
         message.textContent = '';
+        dialog.close();
+ 
     }
 
     resetBtn.addEventListener('click', resetGame);
