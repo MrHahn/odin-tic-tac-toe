@@ -150,6 +150,13 @@ function GameHandler(){
     }
 
     function placeVisualMark(){
+        switch(playersData.getActivePlayer().token) {
+            case 1:
+                this.classList.add('x');
+                break;
+            case 2:
+                this.classList.add('o');
+        }
         let cellCoord = this.dataset.cell;
         let cellCoordArr = cellCoord.split(',');
         let x = parseInt(cellCoordArr[0]);
@@ -160,7 +167,10 @@ function GameHandler(){
 
     let resetBoard = () => {
         const cellButtons = document.querySelectorAll('button[data-cell]');
-        cellButtons.forEach(item => {item.textContent = ''});
+        cellButtons.forEach(item => {
+            item.textContent = '';
+            item.removeAttribute('class');
+        });
     }
 
     const updateBoard = (item) => {
