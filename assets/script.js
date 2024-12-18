@@ -150,19 +150,21 @@ function GameHandler(){
     }
 
     function placeVisualMark(){
-        switch(playersData.getActivePlayer().token) {
-            case 1:
-                this.classList.add('x');
-                break;
-            case 2:
-                this.classList.add('o');
+        if (!this.classList.contains('x') && !this.classList.contains('o')) {
+            switch(playersData.getActivePlayer().token) {
+                case 1:
+                    this.classList.add('x');
+                    break;
+                case 2:
+                    this.classList.add('o');
+            }
         }
         let cellCoord = this.dataset.cell;
         let cellCoordArr = cellCoord.split(',');
         let x = parseInt(cellCoordArr[0]);
         let y = parseInt(cellCoordArr[1]);
         game.placeMark(x, y);
-        updateBoard(this);
+        updateBoard(this, x, y);
     }
 
     let resetBoard = () => {
@@ -173,21 +175,14 @@ function GameHandler(){
         });
     }
 
-    const updateBoard = (item) => {
-        let cellCoord = item.dataset.cell;
-        let cellCoordArr = cellCoord.split(',');
-        let x = parseInt(cellCoordArr[0]);
-        let y = parseInt(cellCoordArr[1]);
-
-        for(let [rowIndex, row] of gameBoard.entries()){
-            for(let [colIndex, cell] of row.entries()){
-                if (rowIndex === x && colIndex === y){
-                    if (cell === 1){ item.textContent = "X"};
-                    if (cell === 2){ item.textContent = "O"};
-                }
-            }
+    const updateBoard = (item, x, y) => {
+        const cell = gameBoard[x][y];
+        if (cell === 1) {
+            item.textContent = "X";
+        } else if (cell === 2) {
+            item.textContent = "O";
         }
-    }
+    };
 
     function resetGame (){
         let message = document.querySelector('.message');
