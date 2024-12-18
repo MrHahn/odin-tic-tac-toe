@@ -17,12 +17,31 @@ function Players(){
 
     const getActivePlayer = () => activePlayer;
 
-    return {getActivePlayer, switchPlayer}
+    const playerNameCollection = () => {
+        const activePlayer = document.querySelector('.active-player span'); 
+        const nameDialog = document.querySelector('.name-collection');
+        const submitNames = document.querySelector('.name-collection form')
+        nameDialog.showModal();
+        submitNames.addEventListener('submit', function(e){
+            e.preventDefault();
+            const formData = new FormData(submitNames);
+            const firstName = formData.get('firstName');
+            const secondName = formData.get('secondName');
+            players[0].name = firstName;
+            players[1].name = secondName;
+            activePlayer.textContent = players[0].name;
+            nameDialog.close();
+        })
+
+
+    }
+
+    return {players, getActivePlayer, switchPlayer, playerNameCollection}
 }
 
-function Game(){
+function Game(playersData){
     let gameOver = false;
-    const players = Players();
+    const players = playersData;
     const board = [];
     let activePlayer = document.querySelector('.active-player span');
 
@@ -100,7 +119,7 @@ function Game(){
 
     const announceWinner = (name) => {
         const message = document.querySelector('.message');
-        const dialog = document.querySelector('dialog');
+        const dialog = document.querySelector('dialog.game-over');
         message.textContent = `${name} wins the game`;
         dialog.showModal();
         gameOver = true;
@@ -111,11 +130,12 @@ function Game(){
 }
 
 function GameHandler(){
-    const game = Game();
-    const players = Players();
+    const playersData = Players();
+    const game = Game(playersData);
     const gameBoard = game.getBoard();
     const gameTable = document.querySelector('.game-table');
     const resetBtn = document.querySelector('.reset');
+    playersData.playerNameCollection();
     game.boardSetup();
 
     for(let [rowIndex, row] of gameBoard.entries()){
@@ -161,7 +181,7 @@ function GameHandler(){
 
     function resetGame (){
         let message = document.querySelector('.message');
-        let dialog = document.querySelector('dialog');
+        let dialog = document.querySelector('dialog.game-over');
         game.boardSetup();
         resetBoard();
         game.resetGameStatus();

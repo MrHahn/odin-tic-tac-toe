@@ -7,11 +7,20 @@
     <link rel="stylesheet" href="assets/style.css"/> 
 </head>
 <body>
-    <h2 class="active-player">Player Turn: <span>Player One</span></h2>
+    <h2 class="active-player">Player Turn: <span></span></h2>
     <div class="game-table">
 
     </div>
-    <dialog>
+    <dialog class="name-collection">
+        <form>
+            <label for="firstName">First Player Name</label>
+            <input type="text" name="firstName" id="firstName">
+            <label for="secondName">Second Player Name</label>
+            <input type="text" name="secondName" id="secondName">
+            <button type="submit">Lets Play</button>
+        </form>
+    </dialog>
+    <dialog class="game-over">
         <div class="message"></div>
         <button class="reset">Play A New Game</button>
     </dialog>
